@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 async function obtenerDatosCompras() {
-    // Pedir al usuario que ingrese mes y año
     const mesAnio = prompt("Por favor, ingresa el mes y año en formato MM AAAA (por ejemplo, 04 2025):");
     if (!mesAnio || !/^\d{2} \d{4}$/.test(mesAnio)) {
         console.error("Formato de fecha inválido. Debe ser MM AAAA.");
