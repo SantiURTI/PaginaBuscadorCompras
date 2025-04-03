@@ -1,6 +1,7 @@
 name: Node.js CI
 
 on:
+  workflow_dispatch:
   push:
     branches: [ main ]
   pull_request:
@@ -12,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x]
+        node-version: [16.x]
 
     steps:
     - name: Checkout repository
@@ -27,4 +28,4 @@ jobs:
       run: npm install
 
     - name: Run script
-      run: node your-script.js
+      run: node script.js
