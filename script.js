@@ -1,35 +1,28 @@
+const fetch = require('node-fetch');
+const XLSX = require('xlsx');
+const fs = require('fs');
+
 async function obtenerDatosCompras() {
     const urlBase = "https://www.comprasestatales.gub.uy/consultas/buscar/tipo-pub/VIG/inciso/3/ue/4/tipo-doc/C/tipo-fecha/ROF/rango-fecha/";
-    const proxyUrl = "https://api.allorigins.win/get?url="; // Proxy gratuito
-    const mesAnio = prompt("Ingrese el mes y año en formato MM YYYY (ejemplo: 04 2025):");
-
-    // Validar formato del mes y año ingresado
-    if (mesAnio.length !== 7 || mesAnio[2] !== " ") {
-        alert("Formato incorrecto. Asegúrese de ingresar el mes en formato MM YYYY.");
-        return;
-    }
+    const mesAnio = "04 2025"; // Puedes modificar esto para que sea variable si lo deseas
 
     const mes = mesAnio.substring(0, 2);
     const anio = mesAnio.substring(3, 7);
 
-    // Calcular el primer y último día del mes
     const fechaInicio = `${anio}-${mes}-01`;
     const fechaFin = `${anio}-${mes}-${new Date(anio, mes, 0).getDate()}`;
 
-    // Establecer la URL para la consulta
     const url = `${urlBase}${fechaInicio}_${fechaFin}/filtro-cat/CAT/orden/ORD_ROF/tipo-orden/ASC`;
 
     try {
-        console.log(`Fetching data from URL: ${proxyUrl}${encodeURIComponent(url)}`);
-        const response = await fetch(`${proxyUrl}${encodeURIComponent(url)}`);
+        console.log(`Fetching data from URL: ${url}`);
+        const response = await fetch(url);
 
-        // Verificar si la respuesta es exitosa
         if (!response.ok) {
             throw new Error(`Network response was not ok: ${response.statusText}`);
         }
 
-        const data = await response.json();
-        const html = data.contents;
+        const html = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
 
@@ -39,7 +32,7 @@ async function obtenerDatosCompras() {
         console.log(`Found ${compras.length} items`);
 
         if (compras.length === 0) {
-            alert("No se encontraron compras publicadas.");
+            console.log("No se encontraron compras publicadas.");
             return;
         }
 
@@ -67,16 +60,16 @@ async function obtenerDatosCompras() {
 
         console.log('Data extracted:', comprasData);
 
-        // Crear y descargar el archivo Excel
         const ws = XLSX.utils.aoa_to_sheet([["Título", "Descripción", "Fecha y Hora", "Fecha de Publicación", "Fecha de Última Modificación"], ...comprasData]);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Compras");
 
         XLSX.writeFile(wb, "Compras.xlsx");
-        alert("Se han extraído todas las compras.");
+        console.log("Se han extraído todas las compras.");
 
     } catch (error) {
         console.error("Error al obtener los datos de compras:", error);
-        alert(`Hubo un error al obtener los datos de compras: ${error.message}`);
     }
 }
+
+obtenerDatosCompras();
