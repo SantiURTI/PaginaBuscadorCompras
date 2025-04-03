@@ -27,5 +27,8 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    - name: Output script.js content
+      run: cat script.js
+
     - name: Run script
       run: node script.js
