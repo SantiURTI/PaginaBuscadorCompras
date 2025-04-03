@@ -1,0 +1,10 @@
+{
+  "name": "pagina-buscador-compras",
+  "version": "1.0.0",
+  "main": "script.js",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.6.7",
+    "xlsx": "^0.17.0"
+  }
+}
