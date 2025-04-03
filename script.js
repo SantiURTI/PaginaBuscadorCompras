@@ -1,7 +1,3 @@
-document.addEventListener('DOMContentLoaded', (event) => {
-    obtenerDatosCompras();
-});
-
 async function obtenerDatosCompras() {
     const mesAnio = prompt("Por favor, ingresa el mes y año en formato MM AAAA (por ejemplo, 04 2025):");
     if (!mesAnio || !/^\d{2} \d{4}$/.test(mesAnio)) {
