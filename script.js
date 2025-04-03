@@ -1,5 +1,6 @@
 async function obtenerDatosCompras() {
     const urlBase = "https://www.comprasestatales.gub.uy/consultas/buscar/tipo-pub/VIG/inciso/3/ue/4/tipo-doc/C/tipo-fecha/ROF/rango-fecha/";
+    const proxyUrl = "https://api.allorigins.win/get?url="; // Proxy gratuito
     const mesAnio = prompt("Ingrese el mes y año en formato MM YYYY (ejemplo: 04 2025):");
 
     // Validar formato del mes y año ingresado
@@ -19,15 +20,16 @@ async function obtenerDatosCompras() {
     const url = `${urlBase}${fechaInicio}_${fechaFin}/filtro-cat/CAT/orden/ORD_ROF/tipo-orden/ASC`;
 
     try {
-        console.log(`Fetching data from URL: ${url}`);
-        const response = await fetch(url);
+        console.log(`Fetching data from URL: ${proxyUrl}${encodeURIComponent(url)}`);
+        const response = await fetch(`${proxyUrl}${encodeURIComponent(url)}`);
 
         // Verificar si la respuesta es exitosa
         if (!response.ok) {
             throw new Error(`Network response was not ok: ${response.statusText}`);
         }
 
-        const html = await response.text();
+        const data = await response.json();
+        const html = data.contents;
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
 
