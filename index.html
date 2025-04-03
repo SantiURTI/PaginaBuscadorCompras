@@ -5,58 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Obtener Compras y Guardar en Excel</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script> <!-- Librería para crear el archivo Excel -->
+    <script src="script.js"></script> <!-- Incluye el archivo JavaScript -->
 </head>
 <body>
 
     <h1>Obtener Compras y Guardar en Excel</h1>
-    <button onclick="obtenerDatosYGenerarExcel()">Obtener Datos</button>
-
-    <script>
-        function obtenerDatosYGenerarExcel() {
-            // URL de la página con los datos
-            const url = 'https://www.comprasestatales.gub.uy/consultas/buscar/tipo-pub/VIG/inciso/3/ue/4/tipo-doc/C/tipo-fecha/ROF/rango-fecha/2025-04-01_2025-04-30/filtro-cat/CAT/orden/ORD_ROF/tipo-orden/ASC';
-
-            fetch(url)
-                .then(response => response.text())  // Obtener el HTML de la página
-                .then(html => {
-                    // Crear un DOMParser para analizar el HTML
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    
-                    // Buscar todas las compras en la página (ajustar el selector según la estructura de la página)
-                    const compras = doc.querySelectorAll('.row.item');  // Seleccionamos todos los elementos de compra
-                    const datos = [
-                        ["COMPRA", "DESCRIPCIÓN", "FECHA DE APERTURA", "FECHA DE PUBLICACIÓN", "FECHA DE MODIFICACIÓN"]
-                    ];
-
-                    // Recorrer todas las compras y extraer la información
-                    compras.forEach(compra => {
-                        const titulo = compra.querySelector('.col-md-5 h3') ? compra.querySelector('.col-md-5 h3').textContent.trim() : 'No disponible';
-                        const descripcion = compra.querySelector('.desc-sniped .buy-object') ? compra.querySelector('.desc-sniped .buy-object').textContent.trim() : 'No disponible';
-                        const fechaHora = compra.querySelector('.desc-sniped strong') ? compra.querySelector('.desc-sniped strong').textContent.trim() : 'No disponible';
-                        const fechaPublicacion = compra.querySelector('.v-middle .text-muted') ? compra.querySelector('.v-middle .text-muted').textContent.trim() : 'No disponible';
-                        const fechaModificacion = compra.querySelector('.v-middle .text-muted') ? compra.querySelector('.v-middle .text-muted').textContent.trim() : 'No disponible';
-
-                        // Agregar los datos de la compra a la matriz de resultados
-                        datos.push([titulo, descripcion, fechaHora, fechaPublicacion, fechaModificacion]);
-                    });
-
-                    // Crear el archivo Excel con los datos obtenidos
-                    var wb = XLSX.utils.book_new();
-                    var ws = XLSX.utils.aoa_to_sheet(datos);
-                    XLSX.utils.book_append_sheet(wb, ws, "Compras");
-
-                    // Descargar el archivo Excel
-                    XLSX.writeFile(wb, "compras.xlsx");
-                    alert('Se han obtenido los datos y generado el archivo Excel.');
-                })
-                .catch(error => {
-                    console.error("Error al obtener los datos:", error);
-                    alert('Ocurrió un error al obtener los datos.');
-                });
-        }
-    </script>
+    <button onclick="obtenerDatosCompras()">Obtener Datos</button>
 
 </body>
 </html>
-
