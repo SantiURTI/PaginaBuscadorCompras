@@ -2,11 +2,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
     obtenerDatosCompras();
 });
 
-// Example of an event listener to prevent multiple calls
+// Ejemplo de un event listener para evitar llamadas múltiples
 let isFetchingData = false;
 
 async function obtenerDatosCompras() {
-    if (isFetchingData) return; // Prevents multiple calls
+    if (isFetchingData) return; // Evita llamadas múltiples
     isFetchingData = true;
 
     const urlBase = "https://www.comprasestatales.gub.uy/consultas/buscar/tipo-pub/VIG/inciso/3/ue/4/tipo-doc/C/tipo-fecha/ROF/rango-fecha/";
