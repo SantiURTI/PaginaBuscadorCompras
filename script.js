@@ -1,7 +1,3 @@
-const fetch = require('node-fetch');
-const XLSX = require('xlsx');
-const fs = require('fs');
-
 async function obtenerDatosCompras() {
     const urlBase = "https://www.comprasestatales.gub.uy/consultas/buscar/tipo-pub/VIG/inciso/3/ue/4/tipo-doc/C/tipo-fecha/ROF/rango-fecha/";
     const mesAnio = "04 2025"; // Puedes modificar esto para que sea variable si lo deseas
@@ -72,4 +68,6 @@ async function obtenerDatosCompras() {
     }
 }
 
-obtenerDatosCompras();
+function obtenerDatosCompras() {
+    obtenerDatosCompras().catch(console.error);
+}
