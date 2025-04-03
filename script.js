@@ -19,13 +19,22 @@ async function obtenerDatosCompras() {
     const url = `${urlBase}${fechaInicio}_${fechaFin}/filtro-cat/CAT/orden/ORD_ROF/tipo-orden/ASC`;
 
     try {
+        console.log(`Fetching data from URL: ${url}`);
         const response = await fetch(url);
+
+        // Verificar si la respuesta es exitosa
+        if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.statusText}`);
+        }
+
         const html = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
 
         let comprasData = [];
-        let compras = doc.querySelectorAll('.row.item');
+        const compras = doc.querySelectorAll('.row.item');
+
+        console.log(`Found ${compras.length} items`);
 
         if (compras.length === 0) {
             alert("No se encontraron compras publicadas.");
@@ -33,24 +42,28 @@ async function obtenerDatosCompras() {
         }
 
         compras.forEach(compra => {
-            let titulo = compra.querySelector('.col-md-5 h3').innerText;
-            titulo = titulo.replace(compra.querySelector('.col-md-5 span').innerText, "");
+            let titulo = compra.querySelector('.col-md-5 h3') ? compra.querySelector('.col-md-5 h3').innerText : "No disponible";
+            titulo = titulo.replace(compra.querySelector('.col-md-5 span') ? compra.querySelector('.col-md-5 span').innerText : "", "");
             titulo = titulo.replace("Licitación Abreviada", "L.A. N°").replace("Compra Directa", "C.D. N°");
 
-            let descripcion = compra.querySelector('.desc-sniped .buy-object').innerText;
-            let fechaHora = compra.querySelector('.desc-sniped strong').innerText;
+            let descripcion = compra.querySelector('.desc-sniped .buy-object') ? compra.querySelector('.desc-sniped .buy-object').innerText : "No disponible";
+            let fechaHora = compra.querySelector('.desc-sniped strong') ? compra.querySelector('.desc-sniped strong').innerText : "No disponible";
 
             let fechaPublicacion = "No disponible";
             let fechaUltimaModificacion = "Sin Modificaciones";
-            let textMutedElements = compra.querySelectorAll('.v-middle .text-muted');
+            const textMutedElements = compra.querySelectorAll('.v-middle .text-muted');
 
             if (textMutedElements.length > 0) {
-                fechaPublicacion = textMutedElements[0].innerText.match(/Publicado: (.*)/)[1] || "No disponible";
-                fechaUltimaModificacion = textMutedElements[0].innerText.match(/Última Modificación: (.*)/)[1] || "Sin Modificaciones";
+                const matchPublicado = textMutedElements[0].innerText.match(/Publicado: (.*)/);
+                fechaPublicacion = matchPublicado ? matchPublicado[1] : "No disponible";
+                const matchModificado = textMutedElements[0].innerText.match(/Última Modificación: (.*)/);
+                fechaUltimaModificacion = matchModificado ? matchModificado[1] : "Sin Modificaciones";
             }
 
             comprasData.push([titulo, descripcion, fechaHora, fechaPublicacion, fechaUltimaModificacion]);
         });
+
+        console.log('Data extracted:', comprasData);
 
         // Crear y descargar el archivo Excel
         const ws = XLSX.utils.aoa_to_sheet([["Título", "Descripción", "Fecha y Hora", "Fecha de Publicación", "Fecha de Última Modificación"], ...comprasData]);
@@ -62,9 +75,6 @@ async function obtenerDatosCompras() {
 
     } catch (error) {
         console.error("Error al obtener los datos de compras:", error);
-        alert("Hubo un error al obtener los datos de compras.");
+        alert(`Hubo un error al obtener los datos de compras: ${error.message}`);
     }
 }
-
-// Llamar a la función para obtener los datos
-obtenerDatosCompras();
