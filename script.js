@@ -11,10 +11,7 @@ async function obtenerDatosCompras() {
     const fechaInicio = `${anio}-${mes}-01`;
     const fechaFin = `${anio}-${mes}-${new Date(anio, mes, 0).getDate()}`;
 
-    const urlBase = "https://www.comprasestatales.gub.uy/consultas/buscar/tipo-pub/VIG/inciso/3/ue/4/tipo-doc/C/tipo-fecha/ROF/rango-fecha/";
-    const targetUrl = `${urlBase}${fechaInicio}_${fechaFin}/filtro-cat/CAT/orden/ORD_ROF/tipo-orden/ASC`;
-    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-    const url = proxyUrl + targetUrl;
+    const url = `https://<tu-nombre-de-usuario>.vercel.app/api/fetch-data?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`;
 
     try {
         console.log(`Fetching data from URL: ${url}`);
