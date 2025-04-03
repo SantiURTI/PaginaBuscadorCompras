@@ -2,20 +2,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
     obtenerDatosCompras();
 });
 
-// Verifica si isFetchingData ya está definida
-if (typeof isFetchingData === 'undefined') {
-    let isFetchingData = false;
-}
-
 async function obtenerDatosCompras() {
-    if (isFetchingData) return; // Evita llamadas múltiples
-    isFetchingData = true;
-
     // Pedir al usuario que ingrese mes y año
     const mesAnio = prompt("Por favor, ingresa el mes y año en formato MM AAAA (por ejemplo, 04 2025):");
     if (!mesAnio || !/^\d{2} \d{4}$/.test(mesAnio)) {
         console.error("Formato de fecha inválido. Debe ser MM AAAA.");
-        isFetchingData = false;
         return;
     }
 
@@ -47,7 +38,6 @@ async function obtenerDatosCompras() {
 
         if (compras.length === 0) {
             console.log("No se encontraron compras publicadas.");
-            isFetchingData = false;
             return;
         }
 
@@ -84,7 +74,5 @@ async function obtenerDatosCompras() {
 
     } catch (error) {
         console.error("Error al obtener los datos de compras:", error);
-    } finally {
-        isFetchingData = false;
     }
 }
