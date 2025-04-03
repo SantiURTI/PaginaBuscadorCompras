@@ -5,6 +5,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
 // Ejemplo de un event listener para evitar llamadas múltiples
 let isFetchingData = false;
 
+document.addEventListener('DOMContentLoaded', (event) => {
+    obtenerDatosCompras();
+});
+
+// Ejemplo de un event listener para evitar llamadas múltiples
+let isFetchingData = false;
+
 async function obtenerDatosCompras() {
     if (isFetchingData) return; // Evita llamadas múltiples
     isFetchingData = true;
@@ -80,3 +87,4 @@ async function obtenerDatosCompras() {
         isFetchingData = false;
     }
 }
+
