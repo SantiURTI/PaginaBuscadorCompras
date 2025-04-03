@@ -1,20 +1,27 @@
-let isFetchingData = false;
+document.addEventListener('DOMContentLoaded', (event) => {
+    obtenerDatosCompras();
+});
+
+// Usar esta variable para evitar múltiples llamadas a la función
+let isFetchingData = false; // Solo se declara una vez
 
 async function obtenerDatosCompras() {
-    if (isFetchingData) return; // Evita llamadas múltiples
-    isFetchingData = true;
-
-    const urlBase = "https://www.comprasestatales.gub.uy/consultas/buscar/tipo-pub/VIG/inciso/3/ue/4/tipo-doc/C/tipo-fecha/ROF/rango-fecha/";
+    if (isFetchingData) return; // Si ya se está realizando una petición, no hacer otra
+    isFetchingData = true; // Marcamos que estamos en proceso de obtener datos
     const mesAnio = "04 2025"; // Puedes modificar esto para que sea variable si lo deseas
-    
     const mesAnio = prompt("Ingresa el mes y año en formato MM YYYY (por ejemplo, 04 2025):");
+
+    // Validar el formato de la fecha ingresada
     if (mesAnio.length !== 7 || mesAnio[2] !== " ") {
         alert("Formato incorrecto. Asegúrate de ingresar la fecha en formato MM YYYY.");
-        isFetchingData = false;
+        isFetchingData = false; // Restablecer la variable para permitir futuras peticiones
         return;
     }
+    
     const mes = mesAnio.substring(0, 2);
     const anio = mesAnio.substring(3, 7);
+    const urlBase = "https://www.comprasestatales.gub.uy/consultas/buscar/tipo-pub/VIG/inciso/3/ue/4/tipo-doc/C/tipo-fecha/ROF/rango-fecha/";
+
 
     const fechaInicio = `${anio}-${mes}-01`;
     const fechaFin = `${anio}-${mes}-${new Date(anio, mes, 0).getDate()}`;
