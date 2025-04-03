@@ -67,7 +67,3 @@ async function obtenerDatosCompras() {
         console.error("Error al obtener los datos de compras:", error);
     }
 }
-
-function obtenerDatosCompras() {
-    obtenerDatosCompras().catch(console.error);
-}
