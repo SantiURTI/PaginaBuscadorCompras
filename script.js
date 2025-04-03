@@ -11,7 +11,7 @@ async function obtenerDatosCompras() {
     const fechaInicio = `${anio}-${mes}-01`;
     const fechaFin = `${anio}-${mes}-${new Date(anio, mes, 0).getDate()}`;
 
-    const url = `https://<santiurti>.vercel.app/api/fetch-data?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`;
+    const url = `https://pagina-buscador-compras-mg4jxfirx-santiurtis-projects.vercel.app/api/fetch-data?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`;
 
     try {
         console.log(`Fetching data from URL: ${url}`);
