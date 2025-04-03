@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Excel</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+</head>
+<body>
+    <h1>Generador de Excel desde página web</h1>
+    <form id="formulario">
+        <label for="mesAnio">Mes y Año (MM YYYY):</label>
+        <input type="text" id="mesAnio" placeholder="04 2025">
+        <br><br>
+        <button type="submit">Generar Excel</button>
+    </form>
+    <br><br>
+    <div id="resultados"></div>
+
+    <script>
+        document.getElementById("formulario").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            // Obtener el mes y año del formulario
+            var mesAnio = document.getElementById("mesAnio").value;
+            var mes = mesAnio.split(" ")[0];
+            var anio = mesAnio.split(" ")[1];
+            
+            // Validar formato MM YYYY
+            if (!/^(\d{2}) (\d{4})$/.test(mesAnio)) {
+                alert("Formato incorrecto. Debe ser MM YYYY");
+                return;
+            }
+            
+            // Aquí, se puede incluir el scraping con JS o obtener los datos de alguna fuente
+            var datos = [
+                ["Titulo", "Descripción", "Fecha y Hora", "Fecha de Publicación", "Última Modificación"],
+                ["Compra A", "Descripción A", "10:00 01/04/2025", "01/04/2025", "02/04/2025"],
+                ["Compra B", "Descripción B", "14:30 01/04/2025", "01/04/2025", "02/04/2025"]
+            ];
+            
+            // Crear archivo Excel
+            var wb = XLSX.utils.book_new();
+            var ws = XLSX.utils.aoa_to_sheet(datos);
+            XLSX.utils.book_append_sheet(wb, ws, "Compras");
+            
+            // Descargar el archivo
+            XLSX.writeFile(wb, "compras_" + mes + "_" + anio + ".xlsx");
+        });
+    </script>
+</body>
+</html>
