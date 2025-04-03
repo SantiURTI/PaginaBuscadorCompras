@@ -1,4 +1,14 @@
+document.addEventListener('DOMContentLoaded', (event) => {
+    obtenerDatosCompras();
+});
+
+// Example of an event listener to prevent multiple calls
+let isFetchingData = false;
+
 async function obtenerDatosCompras() {
+    if (isFetchingData) return; // Prevents multiple calls
+    isFetchingData = true;
+
     const urlBase = "https://www.comprasestatales.gub.uy/consultas/buscar/tipo-pub/VIG/inciso/3/ue/4/tipo-doc/C/tipo-fecha/ROF/rango-fecha/";
     const mesAnio = "04 2025"; // Puedes modificar esto para que sea variable si lo deseas
 
@@ -29,6 +39,7 @@ async function obtenerDatosCompras() {
 
         if (compras.length === 0) {
             console.log("No se encontraron compras publicadas.");
+            isFetchingData = false;
             return;
         }
 
@@ -65,5 +76,7 @@ async function obtenerDatosCompras() {
 
     } catch (error) {
         console.error("Error al obtener los datos de compras:", error);
+    } finally {
+        isFetchingData = false;
     }
 }
